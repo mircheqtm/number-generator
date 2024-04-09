@@ -1,21 +1,15 @@
 package com.grishimir.iton.client;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class ReceivedValue {
-    private int value = 0;
+    private final AtomicInteger value = new AtomicInteger(0);
 
-    private boolean used = true;
-
-    public synchronized void updateValue(int number) {
-        value = number;
-        used = false;
+    public void updateValue(int number) {
+        value.set(number);
     }
 
-    public synchronized int getValue() {
-        if (used) {
-            return 0;
-        }
-        used = true;
-        return value;
-
+    public int getValue() {
+        return value.getAndSet(0);
     }
 }

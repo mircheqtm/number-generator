@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 public class NumberStreamObserver implements StreamObserver<NumberGeneratorOuterClass.NumberResponse> {
     private static final Logger logger = LoggerFactory.getLogger(NumberStreamObserver.class);
+
     private final ReceivedValue receivedValue;
 
     public NumberStreamObserver(ReceivedValue receivedValue) {

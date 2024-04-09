@@ -1,0 +1,62 @@
+buildscript {
+    ext {
+        grpcVersion = '1.62.2'
+        protobufVersion = '4.26.1'
+        slf4jVersion = '2.0.12'
+        logbackVersion = '1.4.14'
+    }
+}
+
+plugins {
+    id 'java'
+    id "com.google.protobuf" version "0.9.4"
+
+
+}
+
+group = 'com.grishimir.iton'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation platform("io.grpc:grpc-bom:$grpcVersion")
+    implementation(
+            'io.grpc:grpc-netty-shaded',
+            'io.grpc:grpc-protobuf',
+            'io.grpc:grpc-stub',
+            'io.grpc:grpc-services',
+            "com.google.protobuf:protobuf-java:$protobufVersion",
+            "org.slf4j:slf4j-api:$slf4jVersion",
+            "ch.qos.logback:logback-classic:$logbackVersion"
+    )
+
+    compileOnly(
+            'javax.annotation:javax.annotation-api:1.2'
+    )
+
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:$protobufVersion"
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:$grpcVersion"
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
